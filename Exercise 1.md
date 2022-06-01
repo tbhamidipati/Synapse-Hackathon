@@ -27,7 +27,7 @@ These pipelines should keep a metadata to load at large scale.
       StateProvinces  |                                                                                                                 Border
 
  - Choose loading behavior per table, select appropriate watermark column for Delta load.  
--  Choose a target destination to land data. make sure tp choose .parquet or .csv format as this will be a requirment to use lakedatabase patterns in Exercise 2.  
+-  Choose a target destination to land data. make sure to choose .parquet or .csv format as this will be a requirment to use lakedatabase patterns in Exercise 2.  
 -  Review summary of the pipline and deploy. make sure to copy the scripts for control table and execut them on the database.  
  - Review the created pipelines, try to understand what are the activities in each pipeline and try to track the logic.  
 -  Trigger the pipeline to move data to your "raw zone".  

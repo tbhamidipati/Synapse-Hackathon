@@ -1,12 +1,12 @@
 # Synapse Hackathon
 
 ## Exercise 0: Env setup (D1 30 min) + whiteboarding
-    Portal or ARM deploy
+Portal or ARM deploy
 
-## Exercise 1: Load data from source systems (D1 1H)
-    copy activity to load into raw zone
+## Exercise 1: [Load data](<./Exercise 1.md>)  (D1 1H)
+At this exercise you should connect to different data sources that WWI needs to collect data and create a pipeline to move data into a centralized data lake. No transformation over data is required. The solution should cover delta load for big tables.
 
-## Exercise 2: Transformation (Raw to CDM) (D1 4H)
+## Exercise 2: [Transformation](./Exercise 2.md) (Raw to CDM) (D1 4H)
  
   - Basic data quiality check (null value, strings, special charecters, bad data types) 
   - Database templates (.parquet)

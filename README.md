@@ -7,17 +7,13 @@
     copy activity to load into raw zone
 
 ## Exercise 2: Transformation (Raw to CDM) (D1 4H)
-  <ul>
-  <li> Basic data quiality check (null value, strings, special charecters, bad data types) 
-  <li> Database templates (.parquet)
-  <ul>
-  <li> Mapping tool
-  <li> Transformation (build by mapping tool) 
-    <ul>
-      <li> Data Flows / pipelines (automated)
-    </ul>
-    </ul>
-  </ul>
+ 
+  - Basic data quiality check (null value, strings, special charecters, bad data types) 
+  - Database templates (.parquet)
+     - Mapping tool
+     - Transformation (build by mapping tool) 
+     - Data Flows / pipelines (automated)
+ 
   
 ## Exercise 3: Datawarehouse (D2 3H)
    Star schema transformation:

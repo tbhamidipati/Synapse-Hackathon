@@ -5,4 +5,5 @@ During this exercise we would like to implement data quilty check and transform 
    - Summary, Average, Standard Deviation, Percentiles for Numeric Columns
    - Distinct Count
    - Distribution Count
-   - Data Quality (regex pattern)
+   - Data Quality (regex pattern) \
+Here is an example for "Sales.Orders" Table. [Sales.Orders Data Checks](<./SalesOrders-DQ-Check.ipynb>)

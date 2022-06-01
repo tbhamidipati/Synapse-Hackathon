@@ -1,7 +1,9 @@
 # Synapse Hackathon
 
-## Exercise 0: Env setup (D1 30 min) + whiteboarding
+## Exercise 0: Env setup (D1 30 min) 
 Portal or ARM deploy
+## End-To-End Solution Architecture:
+![](<https://docs.microsoft.com/en-us/azure/architecture/example-scenario/dataplate2e/media/azure-analytics-end-to-end.png#lightbox>)
 
 ## Exercise 1: [Load data](<./Exercise 1.md>)  (D1 1H)
 At this exercise you should connect to different data sources that WWI needs to collect data and create a pipeline to move data into a centralized data lake. No transformation over data is required. The solution should cover delta load for big tables.

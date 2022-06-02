@@ -1,8 +1,10 @@
 # Load data from source systems
 Before being able to do any analysis over our different source systems, we need to copy data from different source systems to a single data lake. A data lake is often designed to be a central repository of unstructured, semi-structured and structured data. in this scenario we would like our analysis to be decoupled from our source systems, therefore we will copy raw  data to a raw zone of a data lake. 
 ## Task 1: Create a raw zone in your ADLSG2:
-Navigate to [Azure portal](<https://ms.portal.azure.com/>), find you storage account and click on Containers.
-***Img01***
+1. Navigate to [Azure portal](<https://ms.portal.azure.com/>), find you storage account and click on Containers.
+2. Click on +Container to create a new container named raw.
+![image](https://user-images.githubusercontent.com/40135849/171682074-8374ff09-6449-41bb-9458-baa7629d84f9.png)
+
 ## Task 2: Create copy pipeline:
 At this step we need to create data pipelines to ingest data from WWI Sales database, these pipelines should keep a metadata to load at large scale.
   Data Source | User | Pass

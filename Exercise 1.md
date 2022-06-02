@@ -27,8 +27,8 @@ At this step we need to create data pipelines to ingest data from WWI Sales data
     - The first SQL script is used to create two control tables. The main control table stores the table list, file path or copy behaviors. The connection control table stores the connection value of your data store if you used parameterized linked service.
     - The second SQL script is used to create a store procedure. It is used to update the watermark value in main control table when the incremental copy jobs complete every time. make sure to copy the scripts for control table and execute them on the control database.
 9. Open SSMS or Azure Studio to connect to your control table server, and run the two SQL scripts to create control tables and store procedure.
-10. Query the main control table and connection control table to review the metadata in it.
-11. Review the created pipelines, try to understand what are the activities in each pipeline and try to track the logic.  
+10. Query the main control table and connection control table in SSMS or Azure Studio  to review pipelines metadata. Read more about Control Tables [here](<https://docs.microsoft.com/en-us/azure/data-factory/copy-data-tool-metadata-driven#control-tables>). 
+11. Navigate back to Integrate blade, under Pipelines there is a new folder with three pipelines. Review the created pipelines, try to understand what are the activities in each pipeline and try to track the logic. Read more about the pipelines [here](<https://docs.microsoft.com/en-us/azure/data-factory/copy-data-tool-metadata-driven#pipelines>).  
 12. Trigger the pipeline to move data to your "raw zone".  
 
   

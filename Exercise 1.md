@@ -11,9 +11,11 @@ At this step we need to create data pipelines to ingest data from WWI Sales data
   -------|-----|------
   server rvdwwi.database.windows.net  |  admin_user | Hack12345!
 1. Navigate to Integrate blade, click on the plus and choose "Copy Data Tool".   
-2. Choose Metadata-driven copy task and select a database to create and maintain a control table. Metadata-driven copy task make use of a control table to create parameterized pipelines. 
-3. Create a Link Service. Linked services are much like connection strings, which define the connection information needed for the service to connect to external resources. 
-4. Follow the wizard to choose a source data store and select tables you would like to copy over. For this task make sure you have "Show views" checked. please copy over below tables with following loading behavior.     
+![img02](https://user-images.githubusercontent.com/40135849/171682701-71ac460b-9f95-4f8d-a8b2-4f1b75e89c71.png)
+
+3. Choose Metadata-driven copy task and select a database to create and maintain a control table. Metadata-driven copy task make use of a control table to create parameterized pipelines. 
+4. Create a Link Service. Linked services are much like connection strings, which define the connection information needed for the service to connect to external resources. 
+5. Follow the wizard to choose a source data store and select tables you would like to copy over. For this task make sure you have "Show views" checked. please copy over below tables with following loading behavior.     
    Schema | View Name | Load behaviour | Watermark column name | Watermak column value start
    -------|-----------|--------------|--------------|----------
    WWIHACK_SALES | Customers | Delta load | LastEditedWhen | 2013-01-01

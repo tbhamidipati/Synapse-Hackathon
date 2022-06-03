@@ -26,7 +26,7 @@ The lake database in Azure Synapse Analytics enables customers to bring together
    Order    | Order
    Order    | OrderLine
 
-6. Select Map data (Preview) to create new data mapping, you need to activate debug mode for this step. if not you'll get a pop up to do so. This too helps you create ETL mappings and mapping data flows from raw data in ADLSG2 to Synapse lake database tables.
+6. Select Map data (Preview) to create new data mapping, you need to turn on data flow debug mode for this step. if not you'll get a pop up to do so. This too helps you create ETL mappings and mapping data flows from raw data in ADLSG2 to Synapse lake database tables.
 7. Select source type. in this task we are working with ADLSG2, next select linked service you created before to your ADLSG2 where your raw data resides. Choose the source data type (.Parquet). lastly browse your datalake to raw container and choose the path to your raw data. Click Continue. \
   ![image](https://user-images.githubusercontent.com/40135849/171680714-473151e3-0c3f-4cf7-bc02-2b7f95d122a8.png)
 4. Choose a name for the new data maping and continue. This will take sometime to create the mapping.

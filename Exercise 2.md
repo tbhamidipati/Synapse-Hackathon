@@ -18,15 +18,18 @@ The lake database in Azure Synapse Analytics enables customers to bring together
 1. Navigate to Data blade. click on the plus and select Lake datbase.![image](https://user-images.githubusercontent.com/40135849/171678383-5e7f773c-2135-4ad3-aaeb-096fc17cff46.png)
 2. Click on +Table to create tables from template.   
 ![image](https://user-images.githubusercontent.com/40135849/171694472-75b309ad-f17d-419c-8c94-3b964aa5f15d.png)   
-3. From list of indusctries choose Retail and click continue.
+3. From list of indusctries choose Retail and click continue.                                                                                            ![image](https://user-images.githubusercontent.com/31285245/171861020-5c68e8f8-6c5d-4802-9f2c-e70d8a6e2cab.png)
+
 4. Take couple of minutes to review list of tables available. By clicking on each table you can read more infomation and see relationshios. For this task to keep it simple we will use only below tables.        
    Category | Table Name
    ---------|-----------
    Customer | Customer
    Order    | Order
-   Order    | OrderLine
+   Order    | OrderLine  
+![image](https://user-images.githubusercontent.com/31285245/171861454-c3202482-e03d-4b3d-af6e-8c24b50925d8.png)
 
-6. Select Map data (Preview) to create new data mapping, you need to turn on data flow debug mode for this step. if not you'll get a pop up to do so. This too helps you create ETL mappings and mapping data flows from raw data in ADLSG2 to Synapse lake database tables.
+6. Select Map data (Preview) to create new data mapping, you need to turn on data flow debug mode for this step. if not you'll get a pop up to do so. This too helps you create ETL mappings and mapping data flows from raw data in ADLSG2 to Synapse lake database tables.                                   ![image](https://user-images.githubusercontent.com/31285245/171861701-f28749e7-6d95-43b0-bdca-2dab313bf2e0.png)
+
 7. Select source type. in this task we are working with ADLSG2, next select linked service you created before to your ADLSG2 where your raw data resides. Choose the source data type (.Parquet). lastly browse your datalake to raw container and choose the path to your raw data. Click Continue. \
   ![image](https://user-images.githubusercontent.com/40135849/171680714-473151e3-0c3f-4cf7-bc02-2b7f95d122a8.png)
 4. Choose a name for the new data maping and continue. This will take sometime to create the mapping.

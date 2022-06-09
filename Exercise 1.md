@@ -48,3 +48,4 @@ At this step we need to create data pipelines to ingest data from WWI Sales data
 ![image](https://user-images.githubusercontent.com/31285245/171837761-da6ea66c-f0a1-4f09-a91a-16857692bd74.png) 
 ## Task 3: Run your pipeline and monitor:
   Navigate to Monitor blade and monitor your pipelines run. make sure that all pipelines run successfully before moving to next step.
+![image](https://user-images.githubusercontent.com/40135849/172838399-0c066090-757a-4d1d-b866-91ece8322597.png)

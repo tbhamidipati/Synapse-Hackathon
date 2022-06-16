@@ -1,20 +1,18 @@
 # Synapse Hackathon
 
-## Exercise 0: Env setup (D1 30 min) 
-Portal or ARM deploy
+## Exercise 0: Environment Setup: 
+For this workshop you need to have access to an Azure Synapse instance. To create an instance you can either choose from Microsoft Analytics end-to-end with Azure Synapse ARM template which deploys full set of services related to Analytics including Synapse.  
+[![image](https://user-images.githubusercontent.com/40135849/174113982-d6f86cc2-7590-49b7-9a44-c18400614444.png)](<https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-synapse-analytics-end2end%2Fmain%2FDeploy%2FAzureAnalyticsE2E.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-synapse-analytics-end2end%2Fmain%2FDeploy%2FcreateUiDefinition.json>)  
+Or [create a single Synapse workspace](<https://docs.microsoft.com/en-us/azure/synapse-analytics/quickstart-create-workspace>) via [Azure Portal](<https://portal.azure.com/>). 
+
 ## End-To-End Solution Architecture:
 ![](<https://docs.microsoft.com/en-us/azure/architecture/example-scenario/dataplate2e/media/azure-analytics-end-to-end.png#lightbox>)
 
-## Exercise 1: [Load data](<./Exercise 1.md>)  (D1 1H)
-At this exercise you should connect to different data sources that WWI needs to collect data and create a pipeline to move data into a centralized data lake. No transformation over data is required. The solution should cover delta load for big tables.
+## Exercise 1: [Load data](<./Exercise 1.md>) 
+At this exercise you connect to different data sources that WWI needs to collect data and create a pipeline to move data into a centralized data lake. No transformation over data is required. The solution should cover delta load for big tables.
 
-## Exercise 2: [Transformation](<./Exercise 2.md>) (Raw to CDM) (D1 4H)
- 
-  - Basic data quiality check (null value, strings, special charecters, bad data types) 
-  - Database templates (.parquet)
-     - Mapping tool
-     - Transformation (build by mapping tool) 
-     - Data Flows / pipelines (automated)
+## Exercise 2: [Transformation](<./Exercise 2.md>) 
+At this exercise you get to explore different flavors of Synapse runtime. Do ad-hoc data wrangling and use Azure Synapse Lake databse patterns.
  
   
 ## Exercise 3: Datawarehouse (D2 3H)

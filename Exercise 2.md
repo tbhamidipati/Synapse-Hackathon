@@ -24,13 +24,12 @@ The lake database in Azure Synapse Analytics enables customers to bring together
    Category | Table Name
    ---------|-----------
    Customer | Customer
+   Customer | LegalEntityCustomer
    Order    | Order
    Order    | OrderLine  
-![image](https://user-images.githubusercontent.com/31285245/171861454-c3202482-e03d-4b3d-af6e-8c24b50925d8.png)
-
-6. Select Map data (Preview) to create new data mapping, you need to turn on data flow debug mode for this step. if not you'll get a pop up to do so. This too helps you create ETL mappings and mapping data flows from raw data in ADLSG2 to Synapse lake database tables.                                   ![image](https://user-images.githubusercontent.com/31285245/171861701-f28749e7-6d95-43b0-bdca-2dab313bf2e0.png)
-
-7. Select source type. in this task we are working with ADLSG2, next select linked service you created before to your ADLSG2 where your raw data resides. Choose the source data type (.Parquet). lastly browse your datalake to raw container and choose the path to your raw data. Click Continue. \
-  ![image](https://user-images.githubusercontent.com/40135849/171680714-473151e3-0c3f-4cf7-bc02-2b7f95d122a8.png)
-4. Choose a name for the new data maping and continue. This will take sometime to create the mapping.
+![image](https://user-images.githubusercontent.com/40135849/174072478-0579d7a9-4365-44d2-a86c-b78d23145aa8.png)
+Add all tables and give your lake database a name, publish.
+5. Now that we have our Lake database schema ready we need to populate tables with data. There are 3 approaches to achieve this; Spark, Sql, Dataflows. feel free to choose the approach that fits you the best. for sake of this task we will investigate Dataflows. Navigate to Develope blade and click on + icon and create a new Data flow. add a new source by clicking on "Add Sources".
+**Source settings:** Rename the source to WWICustomer, we will be loading customer data from datalake raw zone into lake database customer table. Choose Inline for Source type and select Parquet as dataset type, choose Linke service to ADLSG2 and test connection. ![image](https://user-images.githubusercontent.com/40135849/174074353-8b77d17b-0f57-4c94-bf2a-34077b4c6d02.png)
+**Source options:** S
 

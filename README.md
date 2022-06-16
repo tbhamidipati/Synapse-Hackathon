@@ -6,7 +6,8 @@ For this workshop you need to have access to an Azure Synapse instance. To creat
 Or [create a single Synapse workspace](<https://docs.microsoft.com/en-us/azure/synapse-analytics/quickstart-create-workspace>) via [Azure Portal](<https://portal.azure.com/>). 
 
 ## End-To-End Solution Architecture:
-![](<https://docs.microsoft.com/en-us/azure/architecture/example-scenario/dataplate2e/media/azure-analytics-end-to-end.png#lightbox>)
+![Solution Arc](https://user-images.githubusercontent.com/40135849/174117794-0063d7bd-4cdc-4cfc-8108-669b9cff89a8.jpg)
+
 
 ## Exercise 1: [Load data](<./Exercise 1.md>) 
 At this exercise you connect to different data sources that WWI needs to collect data and create a pipeline to move data into a centralized data lake. No transformation over data is required. The solution should cover delta load for big tables.

@@ -1,5 +1,5 @@
 # Transform raw data
-This excercise covers data process steps before creating a datawarehouse model. In task 1 you'll get to use Synapse compute engines to investige raw data and apply transformation and checks. Task 2 touches over Synapse lake databases. 
+This exercise covers data process steps before creating a datawarehouse model. In task 1 you'll get to use Synapse compute engines to investige raw data and apply transformation and checks. Task 2 touches over Synapse lake databases. 
 
 ## Task 1: Data quality checks:
 The purpose of this task is to make you familiar with different options that Synapse offers to query and work with data. This task is achievable by Spark pool, sql serverless or mapping data flows. You can choose your approach to implement one of the below checks on tables:

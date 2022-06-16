@@ -16,7 +16,7 @@ At this exercise you connect to different data sources that WWI needs to collect
 At this exercise you get to explore different flavors of Synapse runtime. Do ad-hoc data wrangling and use Azure Synapse Lake databse patterns.
  
   
-## Exercise 3: Datawarehouse (D2 3H)
+## Exercise 3: Datawarehouse 
    Star schema transformation:
    <ul> 
     <li> Data flows
@@ -24,12 +24,12 @@ At this exercise you get to explore different flavors of Synapse runtime. Do ad-
     </ul>
     Save data as Delta files
     
-## Exercise 4: Reporting (Mark-Marijn) (D2 1H)
+## Exercise 4: Power BI
   PowerBI integration with Synapse
   Push data marts to PowerBI
   
 ## Good to have Exercises:
-### Exercise 5: Machine Learning (share a ONNX model to play with)
+### Exercise 5: Machine Learning 
 ### Exercise 6: Purview
 ### Exercise 7: Data Mesh
 

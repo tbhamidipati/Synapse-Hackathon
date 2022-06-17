@@ -26,8 +26,10 @@ Now that we have our star schema conceptually designed, we need to create a dedi
 1. Navigate to Manage blade and select SQL pools. if you have a Dedicated pool active use that, if it's paused resume and use. if there is no dedicated sql pool create one by clicking on +New.
 ![image](https://user-images.githubusercontent.com/40135849/174266273-4b0de2f3-f26b-415f-8778-61cce9211896.png)
 Choose a name for your deducated SQL pool and put performance level to DQ100c. Review + create. Wait for successful deployment.
-2. Create a WWI Schema, CustomerDim and OrderFact tables. Navigate to Develope blade click on + and create a new SQL script. Connect to your dedicated SQL pool.
-3.  Run scripts below on your dedicated sql pool. These scrips create a new schema and CustomerDim and FactOrder.
+2. Navigate to Develope blade click on + and create a new SQL script. Connect to your dedicated SQL pool.
+![image](https://user-images.githubusercontent.com/40135849/174281029-7e2f3299-41ff-4efe-866a-04a0380082f4.png)
+
+4. Create a WWI Schema, CustomerDim and OrderFact tables. Run scripts below on your dedicated sql pool. These scrips create a new schema and CustomerDim and FactOrder.
 ```
  CREATE SCHEMA WWI;
 ```

@@ -9,10 +9,10 @@ Or [create a single Synapse workspace](<https://docs.microsoft.com/en-us/azure/s
 ![Solution Arc](https://user-images.githubusercontent.com/40135849/174117794-0063d7bd-4cdc-4cfc-8108-669b9cff89a8.jpg)
 
 
-## Exercise 1: [Load data](<./Exercise 1.md>) 
+## Exercise 1: [Data ingestion](<./Exercise 1.md>) 
 At this exercise you connect to different data sources that WWI needs to collect data and create a pipeline to move data into a centralized data lake. No transformation over data is required. The solution should cover delta load for big tables.
 
-## Exercise 2: [Transformation](<./Exercise 2.md>) 
+## Exercise 2: [Data preparation and transformation](<./Exercise 2.md>) 
 At this exercise you get to explore different flavors of Synapse runtime. Do ad-hoc data wrangling and use Azure Synapse Lake databse patterns.
  
   

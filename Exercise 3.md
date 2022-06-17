@@ -50,5 +50,27 @@ Choose a name for your deducated SQL pool and put performance level to DQ100c. R
  )
  GO
 ```
+```
+CREATE TABLE [WWI].[OrderFact]
+  (
+    [OrderId] [uniqueidentifier]  NOT NULL,
+    [OrderConfirmationNumber] [int]  NOT NULL,
+    [OrderEnteredByEmployeeId] [smallint]  NOT NULL,
+    [OrderReceivedTimestamp] [datetime]  NOT NULL,
+    [OrderEntryTimestamp] [datetime]  NULL,
+    [OrderRequestedDeliveryDate] [datetime]  NULL,
+    [CustomerId] [int]  NOT NULL,
+    [OrderLineNumber] [int]  NOT NULL,
+    [ItemSku] [int]  NOT NULL,
+    [Quantity] [tinyint]  NOT NULL,
+    [ProductSalesPriceAmount] [money ]  NOT NULL,
+    [OrderLineNote] [nchar]  NOT NULL
+  )
+  WITH
+  (
+    DISTRIBUTION = HASH ( [CustomerId] ),
+    CLUSTERED COLUMNSTORE INDEX
+  );
+```
 ## Task 3: Populate data warehouse tables with Spark pool
 ## Task 4: Populate data warehouse tables with Dataflow

@@ -30,32 +30,30 @@ Choose a name for your deducated SQL pool and put performance level to DQ100c. R
 ![image](https://user-images.githubusercontent.com/40135849/174281029-7e2f3299-41ff-4efe-866a-04a0380082f4.png)
 
 4. Create a WWI Schema, CustomerDim and OrderFact tables. Run scripts below on your dedicated sql pool. These scrips create a new schema and CustomerDim and FactOrder.
-```
+``` sql
  CREATE SCHEMA WWI;
 ```
-```
+``` sql
  CREATE TABLE [WWI].[CustomerDim]
  (
-   [CustomerId] [uniqueidentifier] NOT NULL,
+   [CustomerId] [int] NOT NULL,
    [CustomerEstablishedDate] [datetime ]  NULL,
    [CustomerTypeId] [int]  NULL,
    [LedgerId] [int]  NULL,
    [LegalEntityName] [nvarchar](200)  NULL,
    [LegalEntityDateOfEstablishment] [datetime] NULL,
    [StateOfLegalEntityEstablishment] [nvarchar](150)  NULL
-   
  )
  WITH
  (
    DISTRIBUTION = REPLICATE,
    CLUSTERED COLUMNSTORE INDEX
- )
- GO
+ );
 ```
-```
+``` sql
 CREATE TABLE [WWI].[OrderFact]
   (
-    [OrderId] [uniqueidentifier]  NOT NULL,
+    [OrderId] [int]  NOT NULL,
     [OrderConfirmationNumber] [int]  NOT NULL,
     [OrderEnteredByEmployeeId] [smallint]  NOT NULL,
     [OrderReceivedTimestamp] [datetime]  NOT NULL,
@@ -75,4 +73,71 @@ CREATE TABLE [WWI].[OrderFact]
   );
 ```
 ## Task 3: Populate data warehouse tables with Spark pool
+Now we have our Datawarehouse schema and tables ready. We need to create a pipeline to populate fact and dimention tables. We can achieve this using Spark pool, Sql and Dataflow. Task 3 and Task 4 are resulting in same output. you can choose between either of them.
+Within this task we will use Spark pool to read data from Lake database do some transformation and write to dedicated sql database.
+1. Navigate to Data blade, under Lake database expand WWI. expand Tables and hover over Customer table actions, choose new notebook> Load to DataFrame. This will generate pyspark code to read data from lake database. Attach your spark pool to the notebook and run the cell. This might take sometime to warm up Spark cluster.
+![image](https://user-images.githubusercontent.com/40135849/174665368-891736e6-7625-4302-9dee-d3d907b5ebcc.png)  
+2. Replace the cell with below code to read data from Customer and LegalEntityCustomer, join data and cast types.
+``` python
+from pyspark.sql.functions import col
+import pyspark.sql.types
+
+%%pyspark
+# Reading data from Customer table, select columns that we will use.
+CustomerDF = spark.sql("SELECT CustomerId, CustomerEstablishedDate, CustomerTypeId, LedgerId  FROM `WWI_Hack`.`Customer` ")
+CustomerDF.show(10)
+
+# Reading data from LegalEntityCustomer table, select columns that we will use.
+LECustomerDF = spark.sql("SELECT CustomerId,LegalEntityName,LegalEntityDateOfEstablishment,StateOfLegalEntityEstablishment FROM `WWI_Hack`.`LegalEntityCustomer` ")
+LECustomerDF.show(10)
+
+# Joining customer data 
+inner_join = CustomerDF.alias("a").join(LECustomerDF.alias("b"), CustomerDF.CustomerId == LECustomerDF.CustomerId).select("a.*","b.LegalEntityName","b.LegalEntityDateOfEstablishment","b.StateOfLegalEntityEstablishment")
+
+# Check schema for mismatch with CustomerDim table
+inner_join.printSchema()
+
+# Casting TimestampType
+inner_join=inner_join.withColumn("CustomerEstablishedDate",col("CustomerEstablishedDate").cast(TimestampType()))\
+                     .withColumn("LegalEntityDateOfEstablishment",col("LegalEntityDateOfEstablishment").cast(TimestampType())
+                     
+# Create a schema to match CustomerDim table
+CustomerDimSchema =    [StructField('CustomerId',IntegerType(),False),\
+                        StructField('CustomerEstablishedDate',TimestampType(),True),\
+                        StructField('CustomerTypeId',IntegerType(),True),\
+                        StructField('LedgerId',IntegerType(),True),\
+                        StructField('LegalEntityName',StringType(),True),\
+                        StructField('LegalEntityDateOfEstablishment',TimestampType(),True),\
+                        StructField('StateOfLegalEntityEstablishment',StringType(),True)]
+CustomerDim = sqlContext.createDataFrame(inner_join.rdd, StructType(CustomerDimSchema))
+
+CustomerDim.show(10)
+```
+3.  Use below code to write the spark Dataframe from step 2 into CustomerDim sql table. Fill in values in < > . For more info read [here](<https://docs.microsoft.com/en-us/azure/synapse-analytics/spark/synapse-spark-sql-pool-import-export?tabs=python%2Cpython1%2Cpython2%2Cpython3%2Cpython4%2Cpython5#write-using-azure-ad-based-authentication>)
+``` python
+# Write using AAD Auth to internal table
+# Add required imports
+import com.microsoft.spark.sqlanalytics
+from com.microsoft.spark.sqlanalytics.Constants import Constants
+
+# Configure and submit the request to write to Synapse Dedicated SQL Pool
+# Sample below is using AAD-based authentication approach; See further examples to leverage SQL Basic auth.
+(df.write
+ # If `Constants.SERVER` is not provided, the `<database_name>` from the three-part table name argument
+ # to `synapsesql` method is used to infer the Synapse Dedicated SQL End Point.
+ .option(Constants.SERVER, "<sql-server-name>.sql.azuresynapse.net")
+ # Like-wise, if `Constants.TEMP_FOLDER` is not provided, the connector will use the runtime staging directory config (see section on Configuration Options for details).
+ .option(Constants.TEMP_FOLDER, "abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/<some_base_path_for_temporary_staging_folders>")
+ # Choose a save mode that is apt for your use case.
+ # Options for save modes are "error" or "errorifexists" (default), "overwrite", "append", "ignore".
+ # refer to https://spark.apache.org/docs/latest/sql-data-sources-load-save-functions.html#save-modes
+ .mode("overwrite")
+ # Required parameter - Three-part table name to which data will be written
+ .synapsesql("<database_name>.<schema_name>.<table_name>"))
+```
+4. Navigate to Data blade, under SQL database expand dedicated sql pool. Select Top 100 rows on WWI.CustomerDim to make sure our data has been moved.
+![image](https://user-images.githubusercontent.com/40135849/174674946-6a6e4d69-88bb-488a-b434-133663f0e981.png)
+
+
+
 ## Task 4: Populate data warehouse tables with Dataflow

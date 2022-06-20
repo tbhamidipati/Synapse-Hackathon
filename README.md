@@ -16,7 +16,7 @@ At this exercise you connect to different data sources that WWI needs to collect
 At this exercise you get to explore different flavors of Synapse runtime. Do ad-hoc data wrangling and use Azure Synapse Lake databse patterns.
  
   
-## Exercise 3: Datawarehouse 
+## Exercise 3: [Datawarehouse](<./Exercise 3.md>) 
    Star schema transformation:
    <ul> 
     <li> Data flows

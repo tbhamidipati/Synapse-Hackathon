@@ -28,30 +28,32 @@ The lake database in Azure Synapse Analytics enables customers to bring together
    Order    | Order
    Order    | OrderLine  
 ![image](https://user-images.githubusercontent.com/40135849/174072478-0579d7a9-4365-44d2-a86c-b78d23145aa8.png)
-Add all tables and give your lake database a name, publish.
+Add all tables and give your lake database a name, publish.  
 5. Now that we have our Lake database schema ready we need to populate tables with data. There are 3 approaches to achieve this; Spark, Sql, Dataflows. feel free to choose the approach that fits you the best. for sake of this task we will investigate Dataflows. Navigate to Develope blade and click on + icon and create a new Data flow. add a new source by clicking on "Add Sources".  
 **Source settings:** Rename the source to WWICustomer, we will be loading customer data from datalake raw zone into lake database customer table. Choose Inline for Source type and select Parquet as dataset type, choose Linke service to ADLSG2 and test connection. ![image](https://user-images.githubusercontent.com/40135849/174074353-8b77d17b-0f57-4c94-bf2a-34077b4c6d02.png)  
 **Source options:** Navigate to Source options tab, choose File as File mode, browse and select Customer.parquet from datalake raw zone.   
-**Projection:** Import schema to show all columns in Customer.parquet file.
-**Data preview:** Make sure you can preview your data here.
+**Projection:** Import schema to show all columns in Customer.parquet file.  
+**Data preview:** Make sure you can preview your data here.  
 6. Add a Sink step to the data flow. click on + and select sink from the list.  
 ![image](https://user-images.githubusercontent.com/40135849/174098977-73939afd-c021-470e-a3a9-6173e12108cb.png)  
 **Sink:** Rename Output stream name to Customer, keep incomin stream to WWICustomer, choose Workspace DB as Sink type. select Database you've created at step 1. Select Customer table.  
 ![image](https://user-images.githubusercontent.com/40135849/174099972-ec67f719-4c29-4439-b23a-3696f030807f.png)  
-**Mapping:** un-check Auto mapping and manualy set below mappings.  
+**Mapping:** Make sure you have Skip duplicate input and output columns tick for all steps below.  
+![image](https://user-images.githubusercontent.com/40135849/174661898-2fd03b4e-4815-4ae5-8424-989bf9d6ed62.png)  
+7. Un-check Auto mapping and manualy set below mappings.  
 ![image](https://user-images.githubusercontent.com/40135849/174100629-ffc0bd83-5872-482b-a73b-b42b96f6828e.png)  
-7. Create another Sink activity from WWICustomer output stream. Rename the sink to LegalEntityCustomer and select LegalEntityCustomer as Database Table. follow same step as above. make below map:  
-![image](https://user-images.githubusercontent.com/40135849/174101873-aa9a99e6-d157-404a-9bf5-38f23d1791dc.png)  
-8. Repeat steps 5 and 6 to create a new source for WWIOrder and a Sink to Order table. Make below mapping:  
+8. Create another Sink activity from WWICustomer output stream. Rename the sink to LegalEntityCustomer and select LegalEntityCustomer as Database Table. follow same step as above. make below map:  
+![image](https://user-images.githubusercontent.com/40135849/174661702-0a86c362-505f-43d6-8e57-4a4b5f894693.png)  
+9. Repeat steps 5 and 6 to create a new source for WWIOrder and a Sink to Order table. Make below mapping:  
 ![image](https://user-images.githubusercontent.com/40135849/174102652-de37b284-c2c9-428a-83cd-2db5e6653091.png)  
-9.Repeat steps 5 and 6 to create a new source for WWIOrderLine and a Sink to OrderLine table. Make below mapping:  
+10.Repeat steps 5 and 6 to create a new source for WWIOrderLine and a Sink to OrderLine table. Make below mapping:  
 ![image](https://user-images.githubusercontent.com/40135849/174103031-172200f2-1d95-4696-b710-a11b6d6440e0.png)  
-10. Final Data flow should look like below:   
+11. Final Data flow should look like below:   
 ![image](https://user-images.githubusercontent.com/40135849/174103853-912d4eb7-e1f7-49a4-a8e3-0cbc6234a7a0.png)  
-11. At this step we want to create a pipeline and trigger Data flow that we made. Navigate to Integrate blade and click on + icon. Create a new pipeline. Select a Data flow activity.  
+12. At this step we want to create a pipeline and trigger Data flow that we made. Navigate to Integrate blade and click on + icon. Create a new pipeline. Select a Data flow activity.  
  ![image](https://user-images.githubusercontent.com/40135849/174104621-748a37dd-f35f-498e-9f7c-d7e15b7c2c18.png)    
-12. In Setting tab choose the right dataflow. Add trigger and Trigger now.
-13. Navigate to Monitor blade to follow pipeline run. make sure your pipeline runs successfully.  
+13. In Setting tab choose the right dataflow. Add trigger and Trigger now.
+14. Navigate to Monitor blade to follow pipeline run. make sure your pipeline runs successfully.  
 ![image](https://user-images.githubusercontent.com/40135849/174109443-2aa83a20-c0c0-43fb-8014-b36d5079cfaf.png)
 
 

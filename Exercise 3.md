@@ -4,7 +4,7 @@ In this exersice you will practice a small scale mapping of OLTP model to OLAP. 
 ## Task 1: Determine table category:
 Review data that resides in your Lake database. Think of how to design data warehouse fact and dimension tables. Map Customer, LegalEntityCustomer, Order, OrderLine table to 1 fact and 1 dimention tabel.
 You can follow mapping below:   
-![image](https://user-images.githubusercontent.com/40135849/174264673-907105d5-ee08-4856-9f1a-ea0684b9a33c.png)
+![image](https://user-images.githubusercontent.com/40135849/174661007-e129ab94-76b6-41b4-bc1e-865c549703cb.png)
 To design a well performing distributed tables using dedicated SQL pool we need to follow best practices, see tables below for a short review. for more info on Synapse distributions see [here](<https://docs.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-tables-distribute>). 
 
 | Table Indexing | Recommended use |
@@ -42,8 +42,8 @@ Choose a name for your deducated SQL pool and put performance level to DQ100c. R
    [LedgerId] [int]  NULL,
    [LegalEntityName] [nvarchar](200)  NULL,
    [LegalEntityDateOfEstablishment] [datetime] NULL,
-   [StateOfLegalEntityEstablishment] [nvarchar](21)  NULL,
-   [StateOfLegalEntityResidence] [nvarchar](150)  NULL
+   [StateOfLegalEntityEstablishment] [nvarchar](150)  NULL
+   
  )
  WITH
  (

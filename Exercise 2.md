@@ -48,12 +48,14 @@ Add all tables and give your lake database a name, publish.
 ![image](https://user-images.githubusercontent.com/40135849/174102652-de37b284-c2c9-428a-83cd-2db5e6653091.png)  
 10.Repeat steps 5 and 6 to create a new source for WWIOrderLine and a Sink to OrderLine table. Make below mapping:  
 ![image](https://user-images.githubusercontent.com/40135849/174103031-172200f2-1d95-4696-b710-a11b6d6440e0.png)  
-11. Final Data flow should look like below:   
+11. Step 10 might rise a column type mismatch, add a "Derived Column" activity in between steps to cast types before sink.  
+![image](https://user-images.githubusercontent.com/40135849/174663547-a38cc55e-d233-4944-9d4b-df482a7956d3.png)  
+12. Final Data flow should look like below:   
 ![image](https://user-images.githubusercontent.com/40135849/174103853-912d4eb7-e1f7-49a4-a8e3-0cbc6234a7a0.png)  
-12. At this step we want to create a pipeline and trigger Data flow that we made. Navigate to Integrate blade and click on + icon. Create a new pipeline. Select a Data flow activity.  
+13. At this step we want to create a pipeline and trigger Data flow that we made. Navigate to Integrate blade and click on + icon. Create a new pipeline. Select a Data flow activity.  
  ![image](https://user-images.githubusercontent.com/40135849/174104621-748a37dd-f35f-498e-9f7c-d7e15b7c2c18.png)    
-13. In Setting tab choose the right dataflow. Add trigger and Trigger now.
-14. Navigate to Monitor blade to follow pipeline run. make sure your pipeline runs successfully.  
+14. In Setting tab choose the right dataflow. Add trigger and Trigger now.
+15. Navigate to Monitor blade to follow pipeline run. make sure your pipeline runs successfully.  
 ![image](https://user-images.githubusercontent.com/40135849/174663010-0b0b4049-64f5-4a49-82a5-f73d83cb1916.png)
 
 

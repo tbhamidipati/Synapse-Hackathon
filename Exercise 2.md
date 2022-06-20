@@ -54,7 +54,8 @@ Add all tables and give your lake database a name, publish.
  ![image](https://user-images.githubusercontent.com/40135849/174104621-748a37dd-f35f-498e-9f7c-d7e15b7c2c18.png)    
 13. In Setting tab choose the right dataflow. Add trigger and Trigger now.
 14. Navigate to Monitor blade to follow pipeline run. make sure your pipeline runs successfully.  
-![image](https://user-images.githubusercontent.com/40135849/174109443-2aa83a20-c0c0-43fb-8014-b36d5079cfaf.png)
+![image](https://user-images.githubusercontent.com/40135849/174663010-0b0b4049-64f5-4a49-82a5-f73d83cb1916.png)
+
 
 
 

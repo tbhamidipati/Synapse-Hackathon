@@ -141,3 +141,5 @@ from com.microsoft.spark.sqlanalytics.Constants import Constants
 
 
 ## Task 4: Populate data warehouse tables with Dataflow
+![image](https://user-images.githubusercontent.com/36922019/174898516-69ae3396-4479-4cd9-8cd2-f13d729ee829.png)
+

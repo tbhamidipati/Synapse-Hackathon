@@ -152,4 +152,6 @@ from com.microsoft.spark.sqlanalytics.Constants import Constants
 ![image](https://user-images.githubusercontent.com/36922019/174902721-db273695-7576-46e5-a212-f114ab46545c.png)
 ![image](https://user-images.githubusercontent.com/36922019/174903314-07db117b-2cc3-40db-b225-bf4eee833b00.png)
 ![image](https://user-images.githubusercontent.com/36922019/174903691-a1b75db1-b318-4b6a-a993-f5b1f7b48739.png)
+![image](https://user-images.githubusercontent.com/36922019/174905283-881591bd-cd7d-4499-bffb-9724d8a56dc4.png)
+![image](https://user-images.githubusercontent.com/36922019/174905437-273465e2-dc51-4f0f-84d9-c151009f6d9b.png)
 

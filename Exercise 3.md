@@ -56,27 +56,25 @@ CREATE TABLE [WWI].[OrderFact]
     [OrderId] [int]  NOT NULL,
     [OrderConfirmationNumber] [int]  NOT NULL,
     [OrderEnteredByEmployeeId] [smallint]  NOT NULL,
-    [OrderReceivedTimestamp] [datetime]   NULL,
+    [OrderReceivedTimestamp] [datetime]  NOT NULL,
     [OrderEntryTimestamp] [datetime]  NULL,
     [OrderRequestedDeliveryDate] [datetime]  NULL,
     [CustomerId] [int]  NOT NULL,
-    [OrderLineCount] [int]  NOT NULL,
-    [OrderQuantity] [int]  NOT NULL,
-    [OrderAmount] [money ]  NOT NULL
+    [OrderLineNumber] [int]  NOT NULL,
+    [ItemSku] [int]  NOT NULL,
+    [Quantity] [tinyint]  NOT NULL,
+    [ProductSalesPriceAmount] [money ]  NOT NULL,
+    [OrderLineNote] [nchar]  NOT NULL
   )
   WITH
   (
     DISTRIBUTION = HASH ( [CustomerId] ),
     CLUSTERED COLUMNSTORE INDEX
   );
-
 ```
 ## Task 3: Populate data warehouse tables with Spark pool
 Now we have our Datawarehouse schema and tables ready. We need to create a pipeline to populate fact and dimention tables. We can achieve this using Spark pool, Sql and Dataflow. Task 3 and Task 4 are resulting in same output. you can choose between either of them.
-Within this task we will use Spark pool to read data from Lake database do some transformation and write to dedicated sql database.  
-
-### CustomerDim  
-
+Within this task we will use Spark pool to read data from Lake database do some transformation and write to dedicated sql database.
 1. Navigate to Data blade, under Lake database expand WWI. expand Tables and hover over Customer table actions, choose new notebook> Load to DataFrame. This will generate pyspark code to read data from lake database. Attach your spark pool to the notebook and run the cell. This might take sometime to warm up Spark cluster.
 ![image](https://user-images.githubusercontent.com/40135849/174665368-891736e6-7625-4302-9dee-d3d907b5ebcc.png)  
 2. Replace the cell with below code to read data from Customer and LegalEntityCustomer, join data and cast types.
@@ -124,7 +122,7 @@ from com.microsoft.spark.sqlanalytics.Constants import Constants
 
 # Configure and submit the request to write to Synapse Dedicated SQL Pool
 # Sample below is using AAD-based authentication approach; See further examples to leverage SQL Basic auth.
-(CustomerDim.write
+(df.write
  # If `Constants.SERVER` is not provided, the `<database_name>` from the three-part table name argument
  # to `synapsesql` method is used to infer the Synapse Dedicated SQL End Point.
  .option(Constants.SERVER, "<sql-server-name>.sql.azuresynapse.net")
@@ -140,83 +138,33 @@ from com.microsoft.spark.sqlanalytics.Constants import Constants
 4. Navigate to Data blade, under SQL database expand dedicated sql pool. Select Top 100 rows on WWI.CustomerDim to make sure our data has been moved.
 ![image](https://user-images.githubusercontent.com/40135849/174674946-6a6e4d69-88bb-488a-b434-133663f0e981.png)
 
-### OrderFact
 
-1. Follow steps above for Order and OrderLine tables.
-2. Use below code to populate PrderFact table.
-
-``` python
-from pyspark.sql.functions import col
-from pyspark.sql import functions as f
-from pyspark.sql.types import IntegerType, ShortType, TimestampType, StringType, DecimalType, StructType, StructField
-
-%%pyspark
-# Reading data from Order table.
-OrderDF = spark.sql("SELECT * FROM `WWI_Hack`.`Order`")
-#OrderDF.show(10)
-# Reading data from OrderLine.
-OrderLineDF =  spark.sql("SELECT * FROM `WWI_Hack`.`OrderLine` ")
-#OrderLineDF.show(10)
-OrderLineDF=OrderLineDF.withColumn('Order Amount',OrderLineDF['Quantity']*OrderLineDF['ProductSalesPriceAmount']) 
-OrderLineDF.show(10)
-OrderLineDF=OrderLineDF.groupBy('OrderId').agg(f.sum("Order Amount"),f.count("*"),f.sum("Quantity"))
-# Joining Order data 
-inner_join = OrderLineDF.alias("a").join(OrderDF.alias("b"), OrderDF.OrderId == OrderLineDF.OrderId).select("a.*","b.*")
-inner_join=inner_join.select("a.OrderId","OrderConfirmationNumber","OrderEnteredByEmployeeId","OrderReceivedTimestamp","OrderEntryTimestamp","OrderRequestedDeliveryDate","CustomerId","count(1)","sum(Quantity)", "sum(Order Amount)")
-inner_join=inner_join.withColumn("OrderConfirmationNumber",col("OrderConfirmationNumber").cast(IntegerType()))\
-                     .withColumn("OrderRequestedDeliveryDate",col("OrderRequestedDeliveryDate").cast(TimestampType()))\
-                     .withColumn("sum(Quantity)",col("sum(Quantity)").cast(IntegerType()))
-                     
-# Create a schema to match OrderFact table
-OrderFactSchema =     [ StructField('OrderId',IntegerType(),False),
-                        StructField('OrderConfirmationNumber',IntegerType(),False),
-                        StructField('OrderEnteredByEmployeeId',ShortType(),False),
-                        StructField('OrderReceivedTimestamp',TimestampType(),True),
-                        StructField('OrderEntryTimestamp',TimestampType(),True), 
-                        StructField('OrderRequestedDeliveryDate',TimestampType(),True), 
-                        StructField('CustomerId',IntegerType(),False), 
-                        StructField('OrderLineCount',IntegerType(),False), 
-                        StructField('OrderQuantity',IntegerType(),False),
-                        StructField('OrderAmount',DecimalType(19,4),False)]
-OrderFact = sqlContext.createDataFrame(inner_join.rdd, StructType(OrderFactSchema))
-OrderFact.show(10)
-```
-3. Use below code to write the spark Dataframe from step 2 into OrderFact sql table. Fill in values in < > . For more info read [here](<https://docs.microsoft.com/en-us/azure/synapse-analytics/spark/synapse-spark-sql-pool-import-export?tabs=python%2Cpython1%2Cpython2%2Cpython3%2Cpython4%2Cpython5#write-using-azure-ad-based-authentication>)
-``` python
-# Write using AAD Auth to internal table
-# Add required imports
-import com.microsoft.spark.sqlanalytics
-from com.microsoft.spark.sqlanalytics.Constants import Constants
-
-# Configure and submit the request to write to Synapse Dedicated SQL Pool
-# Sample below is using AAD-based authentication approach; See further examples to leverage SQL Basic auth.
-(OrderFact.write
- # If `Constants.SERVER` is not provided, the `<database_name>` from the three-part table name argument
- # to `synapsesql` method is used to infer the Synapse Dedicated SQL End Point.
- .option(Constants.SERVER, "<sql-server-name>.sql.azuresynapse.net")
- # Like-wise, if `Constants.TEMP_FOLDER` is not provided, the connector will use the runtime staging directory config (see section on Configuration Options for details).
- .option(Constants.TEMP_FOLDER, "abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/<some_base_path_for_temporary_staging_folders>")
- # Choose a save mode that is apt for your use case.
- # Options for save modes are "error" or "errorifexists" (default), "overwrite", "append", "ignore".
- # refer to https://spark.apache.org/docs/latest/sql-data-sources-load-save-functions.html#save-modes
- .mode("overwrite")
- # Required parameter - Three-part table name to which data will be written
- .synapsesql("<database_name>.<schema_name>.<table_name>"))
-```
-4. Navigate to Data blade, under SQL database expand dedicated sql pool. Select Top 100 rows on WWI.OrderFact to make sure our data has been moved.
 
 ## Task 4: Populate data warehouse tables with Dataflow
+### Creating Dataflow for Customer Dimension Table
+1. In the Synapse workspace, navigate to the Develop page. Click on '+' and then select Data flow to create a new data flow. Name the Data flow accordingly, in this case CustomerDim.
 ![image](https://user-images.githubusercontent.com/36922019/174898516-69ae3396-4479-4cd9-8cd2-f13d729ee829.png)
+2. Turn on Data Flow debug. Click on Add Source to add the Customer table. 
 ![image](https://user-images.githubusercontent.com/36922019/174900234-88bdd284-464f-4f53-8947-205e13eb1e64.png)
+3. Navigate to the Projection tab to import schema. 
 ![image](https://user-images.githubusercontent.com/36922019/174900481-836223ed-e385-4066-8eb6-2094b761feea.png)
+4. Repeat the steps 2 & 3 to add Legal Entity Customer table (LECustomer) as a source. 
 ![image](https://user-images.githubusercontent.com/36922019/174900800-f27d993a-ac0d-43d2-86d9-21819c3d2e40.png)
-![image](https://user-images.githubusercontent.com/36922019/174901016-c8134c1c-613b-4dd0-ba22-fe7966156b14.png)
+5. Click on '+' and select Join to join Customer table and Legal Entity Customer table. 
 ![image](https://user-images.githubusercontent.com/36922019/174901771-17a052d2-4445-4c88-bb7a-656cbcaa426a.png)
+6. Select Inner join and add the join condition.
 ![image](https://user-images.githubusercontent.com/36922019/174902155-ca4a99e7-53e4-44bb-80e7-fa030bd0872b.png)
+7. Click on '+' and select sink.  
 ![image](https://user-images.githubusercontent.com/36922019/174902357-6af30585-0360-4633-b82e-d01a43d8249f.png)
+8. Click on '+ New' to add a dataset. 
 ![image](https://user-images.githubusercontent.com/36922019/174902721-db273695-7576-46e5-a212-f114ab46545c.png)
+9. Select the Azure Synapse Analytics datastore. 
 ![image](https://user-images.githubusercontent.com/36922019/174903314-07db117b-2cc3-40db-b225-bf4eee833b00.png)
+10. Create a new linked service to connect to the sink table. Once the sink is added, validate the dataflow and then publish it. 
 ![image](https://user-images.githubusercontent.com/36922019/174903691-a1b75db1-b318-4b6a-a993-f5b1f7b48739.png)
+11. Navigate to Integrate page in your Synapse workspace to create a pipeline. Click on '+' to add a new pipeline and add data flow activity. Navigate the settings tab to add CustomerDim dataflow. Validate the pipeline, add a trigger and publish the pipeleine. 
 ![image](https://user-images.githubusercontent.com/36922019/174905283-881591bd-cd7d-4499-bffb-9724d8a56dc4.png)
+12. Navigate to Monitor page in your Synapse workspace to monitor the pipeline. When the pipeline finishes, navigate to the Data page, right click on the CustomerDim table and select 'New SQL script' > 'Select TOP 100 rows'. This would generate a SQL script that can be run to verify if the CustomerDim table is populated. 
+### Creating Dataflow for Order Fact Table
 ![image](https://user-images.githubusercontent.com/36922019/174905437-273465e2-dc51-4f0f-84d9-c151009f6d9b.png)
 

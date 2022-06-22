@@ -56,25 +56,27 @@ CREATE TABLE [WWI].[OrderFact]
     [OrderId] [int]  NOT NULL,
     [OrderConfirmationNumber] [int]  NOT NULL,
     [OrderEnteredByEmployeeId] [smallint]  NOT NULL,
-    [OrderReceivedTimestamp] [datetime]  NOT NULL,
+    [OrderReceivedTimestamp] [datetime]   NULL,
     [OrderEntryTimestamp] [datetime]  NULL,
     [OrderRequestedDeliveryDate] [datetime]  NULL,
     [CustomerId] [int]  NOT NULL,
-    [OrderLineNumber] [int]  NOT NULL,
-    [ItemSku] [int]  NOT NULL,
-    [Quantity] [tinyint]  NOT NULL,
-    [ProductSalesPriceAmount] [money ]  NOT NULL,
-    [OrderLineNote] [nchar]  NOT NULL
+    [OrderLineCount] [int]  NOT NULL,
+    [OrderQuantity] [int]  NOT NULL,
+    [OrderAmount] [money ]  NOT NULL
   )
   WITH
   (
     DISTRIBUTION = HASH ( [CustomerId] ),
     CLUSTERED COLUMNSTORE INDEX
   );
+
 ```
 ## Task 3: Populate data warehouse tables with Spark pool
 Now we have our Datawarehouse schema and tables ready. We need to create a pipeline to populate fact and dimention tables. We can achieve this using Spark pool, Sql and Dataflow. Task 3 and Task 4 are resulting in same output. you can choose between either of them.
-Within this task we will use Spark pool to read data from Lake database do some transformation and write to dedicated sql database.
+Within this task we will use Spark pool to read data from Lake database do some transformation and write to dedicated sql database.  
+
+### CustomerDim  
+
 1. Navigate to Data blade, under Lake database expand WWI. expand Tables and hover over Customer table actions, choose new notebook> Load to DataFrame. This will generate pyspark code to read data from lake database. Attach your spark pool to the notebook and run the cell. This might take sometime to warm up Spark cluster.
 ![image](https://user-images.githubusercontent.com/40135849/174665368-891736e6-7625-4302-9dee-d3d907b5ebcc.png)  
 2. Replace the cell with below code to read data from Customer and LegalEntityCustomer, join data and cast types.
@@ -122,7 +124,7 @@ from com.microsoft.spark.sqlanalytics.Constants import Constants
 
 # Configure and submit the request to write to Synapse Dedicated SQL Pool
 # Sample below is using AAD-based authentication approach; See further examples to leverage SQL Basic auth.
-(df.write
+(CustomerDim.write
  # If `Constants.SERVER` is not provided, the `<database_name>` from the three-part table name argument
  # to `synapsesql` method is used to infer the Synapse Dedicated SQL End Point.
  .option(Constants.SERVER, "<sql-server-name>.sql.azuresynapse.net")
@@ -138,7 +140,70 @@ from com.microsoft.spark.sqlanalytics.Constants import Constants
 4. Navigate to Data blade, under SQL database expand dedicated sql pool. Select Top 100 rows on WWI.CustomerDim to make sure our data has been moved.
 ![image](https://user-images.githubusercontent.com/40135849/174674946-6a6e4d69-88bb-488a-b434-133663f0e981.png)
 
+### OrderFact
 
+1. Follow steps above for Order and OrderLine tables.
+2. Use below code to populate PrderFact table.
+
+``` python
+from pyspark.sql.functions import col
+from pyspark.sql import functions as f
+from pyspark.sql.types import IntegerType, ShortType, TimestampType, StringType, DecimalType, StructType, StructField
+
+%%pyspark
+# Reading data from Order table.
+OrderDF = spark.sql("SELECT * FROM `WWI_Hack`.`Order`")
+#OrderDF.show(10)
+# Reading data from OrderLine.
+OrderLineDF =  spark.sql("SELECT * FROM `WWI_Hack`.`OrderLine` ")
+#OrderLineDF.show(10)
+OrderLineDF=OrderLineDF.withColumn('Order Amount',OrderLineDF['Quantity']*OrderLineDF['ProductSalesPriceAmount']) 
+OrderLineDF.show(10)
+OrderLineDF=OrderLineDF.groupBy('OrderId').agg(f.sum("Order Amount"),f.count("*"),f.sum("Quantity"))
+# Joining Order data 
+inner_join = OrderLineDF.alias("a").join(OrderDF.alias("b"), OrderDF.OrderId == OrderLineDF.OrderId).select("a.*","b.*")
+inner_join=inner_join.select("a.OrderId","OrderConfirmationNumber","OrderEnteredByEmployeeId","OrderReceivedTimestamp","OrderEntryTimestamp","OrderRequestedDeliveryDate","CustomerId","count(1)","sum(Quantity)", "sum(Order Amount)")
+inner_join=inner_join.withColumn("OrderConfirmationNumber",col("OrderConfirmationNumber").cast(IntegerType()))\
+                     .withColumn("OrderRequestedDeliveryDate",col("OrderRequestedDeliveryDate").cast(TimestampType()))\
+                     .withColumn("sum(Quantity)",col("sum(Quantity)").cast(IntegerType()))
+                     
+# Create a schema to match OrderFact table
+OrderFactSchema =     [ StructField('OrderId',IntegerType(),False),
+                        StructField('OrderConfirmationNumber',IntegerType(),False),
+                        StructField('OrderEnteredByEmployeeId',ShortType(),False),
+                        StructField('OrderReceivedTimestamp',TimestampType(),True),
+                        StructField('OrderEntryTimestamp',TimestampType(),True), 
+                        StructField('OrderRequestedDeliveryDate',TimestampType(),True), 
+                        StructField('CustomerId',IntegerType(),False), 
+                        StructField('OrderLineCount',IntegerType(),False), 
+                        StructField('OrderQuantity',IntegerType(),False),
+                        StructField('OrderAmount',DecimalType(19,4),False)]
+OrderFact = sqlContext.createDataFrame(inner_join.rdd, StructType(OrderFactSchema))
+OrderFact.show(10)
+```
+3. Use below code to write the spark Dataframe from step 2 into OrderFact sql table. Fill in values in < > . For more info read [here](<https://docs.microsoft.com/en-us/azure/synapse-analytics/spark/synapse-spark-sql-pool-import-export?tabs=python%2Cpython1%2Cpython2%2Cpython3%2Cpython4%2Cpython5#write-using-azure-ad-based-authentication>)
+``` python
+# Write using AAD Auth to internal table
+# Add required imports
+import com.microsoft.spark.sqlanalytics
+from com.microsoft.spark.sqlanalytics.Constants import Constants
+
+# Configure and submit the request to write to Synapse Dedicated SQL Pool
+# Sample below is using AAD-based authentication approach; See further examples to leverage SQL Basic auth.
+(OrderFact.write
+ # If `Constants.SERVER` is not provided, the `<database_name>` from the three-part table name argument
+ # to `synapsesql` method is used to infer the Synapse Dedicated SQL End Point.
+ .option(Constants.SERVER, "<sql-server-name>.sql.azuresynapse.net")
+ # Like-wise, if `Constants.TEMP_FOLDER` is not provided, the connector will use the runtime staging directory config (see section on Configuration Options for details).
+ .option(Constants.TEMP_FOLDER, "abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/<some_base_path_for_temporary_staging_folders>")
+ # Choose a save mode that is apt for your use case.
+ # Options for save modes are "error" or "errorifexists" (default), "overwrite", "append", "ignore".
+ # refer to https://spark.apache.org/docs/latest/sql-data-sources-load-save-functions.html#save-modes
+ .mode("overwrite")
+ # Required parameter - Three-part table name to which data will be written
+ .synapsesql("<database_name>.<schema_name>.<table_name>"))
+```
+4. Navigate to Data blade, under SQL database expand dedicated sql pool. Select Top 100 rows on WWI.OrderFact to make sure our data has been moved.
 
 ## Task 4: Populate data warehouse tables with Dataflow
 ![image](https://user-images.githubusercontent.com/36922019/174898516-69ae3396-4479-4cd9-8cd2-f13d729ee829.png)

@@ -141,3 +141,17 @@ from com.microsoft.spark.sqlanalytics.Constants import Constants
 
 
 ## Task 4: Populate data warehouse tables with Dataflow
+![image](https://user-images.githubusercontent.com/36922019/174898516-69ae3396-4479-4cd9-8cd2-f13d729ee829.png)
+![image](https://user-images.githubusercontent.com/36922019/174900234-88bdd284-464f-4f53-8947-205e13eb1e64.png)
+![image](https://user-images.githubusercontent.com/36922019/174900481-836223ed-e385-4066-8eb6-2094b761feea.png)
+![image](https://user-images.githubusercontent.com/36922019/174900800-f27d993a-ac0d-43d2-86d9-21819c3d2e40.png)
+![image](https://user-images.githubusercontent.com/36922019/174901016-c8134c1c-613b-4dd0-ba22-fe7966156b14.png)
+![image](https://user-images.githubusercontent.com/36922019/174901771-17a052d2-4445-4c88-bb7a-656cbcaa426a.png)
+![image](https://user-images.githubusercontent.com/36922019/174902155-ca4a99e7-53e4-44bb-80e7-fa030bd0872b.png)
+![image](https://user-images.githubusercontent.com/36922019/174902357-6af30585-0360-4633-b82e-d01a43d8249f.png)
+![image](https://user-images.githubusercontent.com/36922019/174902721-db273695-7576-46e5-a212-f114ab46545c.png)
+![image](https://user-images.githubusercontent.com/36922019/174903314-07db117b-2cc3-40db-b225-bf4eee833b00.png)
+![image](https://user-images.githubusercontent.com/36922019/174903691-a1b75db1-b318-4b6a-a993-f5b1f7b48739.png)
+![image](https://user-images.githubusercontent.com/36922019/174905283-881591bd-cd7d-4499-bffb-9724d8a56dc4.png)
+![image](https://user-images.githubusercontent.com/36922019/174905437-273465e2-dc51-4f0f-84d9-c151009f6d9b.png)
+

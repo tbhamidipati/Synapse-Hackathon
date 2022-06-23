@@ -28,8 +28,7 @@ Task 3: [Populate data warehouse tables with Spark pool](<https://github.com/Mar
 Task 4: [Populate data warehouse tables with Dataflow](<https://github.com/MarziehBarghandan/Synapse-Hackathon/blob/main/Exercise%203.md#task-4-populate-data-warehouse-tables-with-dataflow>)  
     
 ## Exercise 4: Power BI
-  PowerBI integration with Synapse
-  Push data marts to PowerBI
+In this challenege you need to create an ad-hoc report in Synapse to identify 
   
 ## Good to have Exercises:
 ### Exercise 5: Machine Learning 

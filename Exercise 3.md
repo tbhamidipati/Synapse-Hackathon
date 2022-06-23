@@ -206,6 +206,7 @@ from com.microsoft.spark.sqlanalytics.Constants import Constants
 4. Navigate to Data blade, under SQL database expand dedicated sql pool. Select Top 100 rows on WWI.OrderFact to make sure our data has been moved.
 
 ## Task 4: Populate data warehouse tables with Dataflow
+#Create Dataflow for the Customer Dimension Table
 ![image](https://user-images.githubusercontent.com/36922019/174898516-69ae3396-4479-4cd9-8cd2-f13d729ee829.png)
 ![image](https://user-images.githubusercontent.com/36922019/174900234-88bdd284-464f-4f53-8947-205e13eb1e64.png)
 ![image](https://user-images.githubusercontent.com/36922019/174900481-836223ed-e385-4066-8eb6-2094b761feea.png)

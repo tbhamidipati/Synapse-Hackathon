@@ -10,19 +10,22 @@ Or [create a single Synapse workspace](<https://docs.microsoft.com/en-us/azure/s
 
 
 ## Exercise 1: [Data ingestion](<./Exercise 1.md>) 
-At this exercise you connect to different data sources that WWI needs to collect data and create a pipeline to move data into a centralized data lake. No transformation over data is required. The solution should cover delta load for big tables.
-
+At this exercise you connect to different data sources that WWI needs to collect data and create a pipeline to move data into a centralized data lake. No transformation over data is required. The solution should cover delta load for big tables.  
+Task 1: [Create a raw zone in your ADLSG2](<https://github.com/MarziehBarghandan/Synapse-Hackathon/blob/main/Exercise%201.md#task-1-create-a-raw-zone-in-your-adlsg2>)  
+Task 2: [Create copy pipeline](<https://github.com/MarziehBarghandan/Synapse-Hackathon/blob/main/Exercise%201.md#task-2-create-copy-pipeline>)  
+Task 3: [Run your pipeline and monitor](<https://github.com/MarziehBarghandan/Synapse-Hackathon/blob/main/Exercise%201.md#task-3-run-your-pipeline-and-monitor>)
 ## Exercise 2: [Data preparation and transformation](<./Exercise 2.md>) 
-At this exercise you get to explore different flavors of Synapse runtime. Do ad-hoc data wrangling and use Azure Synapse Lake databse patterns.
- 
+At this exercise you get to explore different flavors of Synapse runtime. Do ad-hoc data wrangling and use Azure Synapse Lake databse patterns.  
+Task 1: [Data quality checks](<https://github.com/MarziehBarghandan/Synapse-Hackathon/blob/main/Exercise%202.md#task-1-data-quality-checks>)  
+Task 2: [Create Lake database](<https://github.com/MarziehBarghandan/Synapse-Hackathon/blob/main/Exercise%202.md#task-2-create-lake-database>)  
+
   
-## Exercise 3: [Datawarehouse](<./Exercise 3.md>) 
-   Star schema transformation:
-   <ul> 
-    <li> Data flows
-    <li> Spark Pools
-    </ul>
-    Save data as Delta files
+## Exercise 3: [Datawarehouse ](<./Exercise 3.md>)  
+At this exercise you work on designing Datawarehouse schema. You investigate what Azure Synapse offers in terms of indexing and partitioning and pipeline design.    
+Task 1: [Determine table category](<https://github.com/MarziehBarghandan/Synapse-Hackathon/blob/main/Exercise%203.md#task-1-determine-table-category>)  
+Task 2: [Create Dedicated SQL pool and star schema](<https://github.com/MarziehBarghandan/Synapse-Hackathon/blob/main/Exercise%203.md#task-2-create-dedicated-sql-pool-and-star-schema>)  
+Task 3: [Populate data warehouse tables with Spark pool](<https://github.com/MarziehBarghandan/Synapse-Hackathon/blob/main/Exercise%203.md#task-3-populate-data-warehouse-tables-with-spark-pool>)  
+Task 4: [Populate data warehouse tables with Dataflow](<https://github.com/MarziehBarghandan/Synapse-Hackathon/blob/main/Exercise%203.md#task-4-populate-data-warehouse-tables-with-dataflow>)  
     
 ## Exercise 4: Power BI
   PowerBI integration with Synapse

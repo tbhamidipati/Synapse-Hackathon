@@ -27,11 +27,14 @@ Task 2: [Create Dedicated SQL pool and star schema](<https://github.com/MarziehB
 Task 3: [Populate data warehouse tables with Spark pool](<https://github.com/MarziehBarghandan/Synapse-Hackathon/blob/main/Exercise%203.md#task-3-populate-data-warehouse-tables-with-spark-pool>)  
 Task 4: [Populate data warehouse tables with Dataflow](<https://github.com/MarziehBarghandan/Synapse-Hackathon/blob/main/Exercise%203.md#task-4-populate-data-warehouse-tables-with-dataflow>)  
     
-## Exercise 4: Power BI
-In this challenege you need to create an ad-hoc report in Synapse to identify 
-  
-## Good to have Exercises:
-### Exercise 5: Machine Learning 
-### Exercise 6: Purview
-### Exercise 7: Data Mesh
+## Challenge 1: Power BI
+In this challenege you need to create an ad-hoc report in Synapse to identify Top 20 states that are generating most order amount. The result of this task is shown below:
+![image](https://user-images.githubusercontent.com/40135849/175316440-bd82f9ec-37e8-409d-ae08-60b6a70e8ac8.png)
+
+Tip: [Link PowerBI workspace to Synapse workspace](<https://docs.microsoft.com/en-us/azure/synapse-analytics/quickstart-power-bi>)
+
+## Challenge 2: Machine Learning
+
+## Challenge 3: Purview
+
 

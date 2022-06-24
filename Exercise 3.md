@@ -206,38 +206,54 @@ from com.microsoft.spark.sqlanalytics.Constants import Constants
 4. Navigate to Data blade, under SQL database expand dedicated sql pool. Select Top 100 rows on WWI.OrderFact to make sure our data has been moved.
 
 ## Task 4: Populate data warehouse tables with Dataflow
-###Create Dataflow for the Customer Dimension Table
+### CustomerDim
+1. Navigate to the develop blade, click on '+' and select Data flow to create a blank Data flow. As we are working with the Customer Dimension Tables, name the data flow Customer Dim.  
 ![image](https://user-images.githubusercontent.com/36922019/174898516-69ae3396-4479-4cd9-8cd2-f13d729ee829.png)
+2. Turn on Data flow debug. To add customer table as a source, click on 'Add Source' and fill in the source information in source settings. 
 ![image](https://user-images.githubusercontent.com/36922019/174900234-88bdd284-464f-4f53-8947-205e13eb1e64.png)
+3. Switch to Projection tab to import schema. 
 ![image](https://user-images.githubusercontent.com/36922019/174900481-836223ed-e385-4066-8eb6-2094b761feea.png)
+4. Repeat the steps to add Legal Entity Customer (LECustomer) as a source and import schema. 
 ![image](https://user-images.githubusercontent.com/36922019/174900800-f27d993a-ac0d-43d2-86d9-21819c3d2e40.png)
 ![image](https://user-images.githubusercontent.com/36922019/174901016-c8134c1c-613b-4dd0-ba22-fe7966156b14.png)
+5. Click on '+' and select join the Customer table and Legal Entity Customer table.
 ![image](https://user-images.githubusercontent.com/36922019/174901771-17a052d2-4445-4c88-bb7a-656cbcaa426a.png)
 ![image](https://user-images.githubusercontent.com/36922019/174902155-ca4a99e7-53e4-44bb-80e7-fa030bd0872b.png)
+ 6. Click on '+' and select sink to write the the data to the Customer Dimension table. 
 ![image](https://user-images.githubusercontent.com/36922019/174902357-6af30585-0360-4633-b82e-d01a43d8249f.png)
+7. Click on '+ New' to add a new Dataset.
 ![image](https://user-images.githubusercontent.com/36922019/174902721-db273695-7576-46e5-a212-f114ab46545c.png)
+8. Select the Azure Synapse Analytics option as the data store. 
 ![image](https://user-images.githubusercontent.com/36922019/174903314-07db117b-2cc3-40db-b225-bf4eee833b00.png)
+9. Create a new Linked Service. If we now look at the Data preview tab, we should see the columns from the Customer table and Legal Entity customer table joined. 
 ![image](https://user-images.githubusercontent.com/36922019/174903691-a1b75db1-b318-4b6a-a993-f5b1f7b48739.png)
+10. To run the data flows, navigate to the Integrate blade of your Synapse workspace. Create a new pipeline by clicking '+' and selecting Pipeline. Add a Data flow Activity and connect the CustomerDim dataflow to the activity. Publish all the changes and trigger the pipeline. 
 ![image](https://user-images.githubusercontent.com/36922019/174905283-881591bd-cd7d-4499-bffb-9724d8a56dc4.png)
-###Create Dataflow for the Order Fact Table
+11. Once the pipeline succeeds, navigate to the Data blade. Right click on the Customer Dimension table and click on "New SQL Script' > 'Select TOP 100 rows'. Run the generated script to validate if the Customer Dimension table is populated with data. 
+![image](https://user-images.githubusercontent.com/36922019/175569811-6e70923b-370b-4a6c-b822-42ac63bb2139.png)
+
+### OrderFact
+1. Add Order and OrderLine tables as the sources of our new OrderFact dataflow. Turn on Data flow debug. 
 ![image](https://user-images.githubusercontent.com/36922019/175496764-3eb6d1b8-3e19-495a-865f-eda103862b05.png)
+2. Click '+' to add derived column activity to create the OrderAmount column. 
 ![image](https://user-images.githubusercontent.com/36922019/175496830-e319b6e1-d345-480c-91d2-eb8d53e2f090.png)
 ![image](https://user-images.githubusercontent.com/36922019/175496913-d5c8a810-5fae-4949-92ca-1289407a037b.png)
+3. Click '+' to add aggregate activity to group by the OrderId. 
 ![image](https://user-images.githubusercontent.com/36922019/175496975-c6b691b7-0fa6-460b-a753-d6442dacaeb1.png)
 ![image](https://user-images.githubusercontent.com/36922019/175497065-cfd3a596-9cee-41d4-9a3e-1b0f462d2dff.png)
+4. Switch to the aggregate tab to add the columns and expressions. 
 ![image](https://user-images.githubusercontent.com/36922019/175497136-137ac562-5d64-4818-918f-b1d66194dc2e.png)
+5. Click '+' to add join activity to join Order table with the output stream of GroupByOrderId activity. 
 ![image](https://user-images.githubusercontent.com/36922019/175497225-c61cbe70-ffa7-495e-b594-8052db724a90.png)
-![image](https://user-images.githubusercontent.com/36922019/175497363-064e8b11-eeb2-4baf-be14-41019efba594.png)
 ![image](https://user-images.githubusercontent.com/36922019/175497427-aa77bde9-94bb-4547-8cc8-42ca3a8cf1bd.png)
+6. Click '+' to add derived column activity to perform typecasting. Add the columns to typecast to the list and their respective expressions. 
 ![image](https://user-images.githubusercontent.com/36922019/175497458-3ee4dd39-2ad6-4bef-b466-3be7dbb752a8.png)
+7.  Click on '+' and select sink to write the the data to the Order Fact table. Select the dataset OrderFact, navigate to the data preview to check if the required columns from Order and OrderLine are present. 
 ![image](https://user-images.githubusercontent.com/36922019/175497491-68ebeae9-ef0e-43c2-9128-472ccb01e084.png)
+8. To run the data flows, navigate to the Integrate blade of your Synapse workspace. Create a new pipeline by clicking '+' and selecting Pipeline. Add a Data flow Activity and connect the OrderFact dataflow to the activity. Publish all the changes and trigger the pipeline. 
 ![image](https://user-images.githubusercontent.com/36922019/175497629-cce2e4b9-699a-4145-b925-d78d908853ed.png)
-
-
-
-
-
-
+9. Navigate to the Monitor page of your Synapse Workspace to monitor the Pipeline run status. Once the pipeline succeeds, navigate to the Data blade. Right click on the Order Fact table and click on "New SQL Script' > 'Select TOP 100 rows'. Run the generated script to validate if the Order Fact table is populated with data. 
+![image](https://user-images.githubusercontent.com/36922019/175569955-5f1858a2-6b53-4c0a-b128-70c50a4dc4e3.png)
 
 
 

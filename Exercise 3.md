@@ -206,7 +206,7 @@ from com.microsoft.spark.sqlanalytics.Constants import Constants
 4. Navigate to Data blade, under SQL database expand dedicated sql pool. Select Top 100 rows on WWI.OrderFact to make sure our data has been moved.
 
 ## Task 4: Populate data warehouse tables with Dataflow
-#Create Dataflow for the Customer Dimension Table
+###Create Dataflow for the Customer Dimension Table
 ![image](https://user-images.githubusercontent.com/36922019/174898516-69ae3396-4479-4cd9-8cd2-f13d729ee829.png)
 ![image](https://user-images.githubusercontent.com/36922019/174900234-88bdd284-464f-4f53-8947-205e13eb1e64.png)
 ![image](https://user-images.githubusercontent.com/36922019/174900481-836223ed-e385-4066-8eb6-2094b761feea.png)
@@ -219,5 +219,26 @@ from com.microsoft.spark.sqlanalytics.Constants import Constants
 ![image](https://user-images.githubusercontent.com/36922019/174903314-07db117b-2cc3-40db-b225-bf4eee833b00.png)
 ![image](https://user-images.githubusercontent.com/36922019/174903691-a1b75db1-b318-4b6a-a993-f5b1f7b48739.png)
 ![image](https://user-images.githubusercontent.com/36922019/174905283-881591bd-cd7d-4499-bffb-9724d8a56dc4.png)
-![image](https://user-images.githubusercontent.com/36922019/174905437-273465e2-dc51-4f0f-84d9-c151009f6d9b.png)
+###Create Dataflow for the Order Fact Table
+![image](https://user-images.githubusercontent.com/36922019/175496764-3eb6d1b8-3e19-495a-865f-eda103862b05.png)
+![image](https://user-images.githubusercontent.com/36922019/175496830-e319b6e1-d345-480c-91d2-eb8d53e2f090.png)
+![image](https://user-images.githubusercontent.com/36922019/175496913-d5c8a810-5fae-4949-92ca-1289407a037b.png)
+![image](https://user-images.githubusercontent.com/36922019/175496975-c6b691b7-0fa6-460b-a753-d6442dacaeb1.png)
+![image](https://user-images.githubusercontent.com/36922019/175497065-cfd3a596-9cee-41d4-9a3e-1b0f462d2dff.png)
+![image](https://user-images.githubusercontent.com/36922019/175497136-137ac562-5d64-4818-918f-b1d66194dc2e.png)
+![image](https://user-images.githubusercontent.com/36922019/175497225-c61cbe70-ffa7-495e-b594-8052db724a90.png)
+![image](https://user-images.githubusercontent.com/36922019/175497363-064e8b11-eeb2-4baf-be14-41019efba594.png)
+![image](https://user-images.githubusercontent.com/36922019/175497427-aa77bde9-94bb-4547-8cc8-42ca3a8cf1bd.png)
+![image](https://user-images.githubusercontent.com/36922019/175497458-3ee4dd39-2ad6-4bef-b466-3be7dbb752a8.png)
+![image](https://user-images.githubusercontent.com/36922019/175497491-68ebeae9-ef0e-43c2-9128-472ccb01e084.png)
+![image](https://user-images.githubusercontent.com/36922019/175497629-cce2e4b9-699a-4145-b925-d78d908853ed.png)
+
+
+
+
+
+
+
+
+
 
